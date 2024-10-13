@@ -1,8 +1,8 @@
 # REST to GraphQL Adapter web app with dynamic plug-and-play data sources and GraphQL Playground for testing queries
 
-Developers have been using REST API for years to work with backend data. However, GraphQL becomes more popular in diverse headless CMS engines because of more convenient data query options.
+Developers have been using REST APIs for years to interact with backend data. However, GraphQL is becoming increasingly popular in various headless CMS engines due to its more flexible and convenient data querying options.
 
-This adapter web app allows you to transform your existing REST API endpoints to GraphQL entities automatically and expose them for GraphQL queries with filters, selections of fields, dynamic variables and free text search.
+This web app provides automatic transformation of REST API endpoints into GraphQL schema entities, making them available for regular GraphQL queries with filters, field selections, dynamic variables, and free-text search. The app supports preconfigured "plug-and-play" REST API endpoints as well as dynamic REST data sources.
 
 # Screenshots
 
@@ -28,7 +28,7 @@ This adapter web app allows you to transform your existing REST API endpoints to
 
 - Technical stack: Next.js 15, React 19, TypeScript, GraphQL with Apollo Server and Client, Apollo RestLink, Apollo Integrations for Next.js Page Router setup, public REST API endpoints, Tailwind, Radix UI, local **json-server**, which starts with **concurrently** module and provides a local REST API endpoint (made from a locallly stored JSON file **public/employees.json**).
 
-- I intentionally chose Next.js on Page Router for developing this web application by the reason. The matter is Apollo Server Integrations for Next.js do not have an stable package for App Router. This is the state on Oct 14, 2024.
+- I intentionally chose Next.js with the Page Router for developing this web application. The reason is that Apollo Server Integrations for Next.js do not yet have a stable package for the App Router. This was the state as of October 14, 2024.
 
 - After you open the Homepage at http://localhost:3000, the adapter connects to all REST API URLs found in **.env**, retrieves and parses data samples.
 
@@ -109,11 +109,11 @@ const responseTransformer = async (response: Response) => {
 
 # Typical use cases
 
-Let's put that you have a few REST API endpoints that produce JSON content in standard array-based formats like https://jsonplaceholder.typicode.com/users or https://dummyjson.com/users.
+Imagine you have several REST API endpoints that return JSON content in standard array-based formats, such as an "array of objects" or "a root object containing an array of objects" or similar structures. The JSON format transformer can easily be adapted to handle more complex scenarios. For instance, your REST API might initially provide a set of complex, multi-level JSON objects nested within each other
 
-- For instance, array of objects or root object with array of objects or other similar structures. The JSON [format transformer](data/restToGraphqlQueryAdapter.ts) can be adjusted to handle more complicated scenario.
+- The JSON format transformer can easily be adapted to handle more complex scenarios.
 
-- Initially, you may have a set of complex multi-level JSON objects nested into each other that may look like shown below.
+- For instance, your REST API might initially provide a set of complex, multi-level JSON objects nested within each other.
 
 ## Source JSON that comes from REST API endpoints
 
@@ -218,11 +218,9 @@ Let's put that you have a few REST API endpoints that produce JSON content in st
 
 ## Provided formats of GraphQL queries
 
-The adapter takes a few objects of each endpoint as samples, parses their structures and generates GraphQL schema with type definitions and resolvers that allow you to query any object properties using regular syntax of GraphQL familiar to you.
+The adapter is designed to handle this complexity. It takes a few sample objects from each endpoint, parses their structures, and generates a GraphQL schema with type definitions and resolvers. This enables you to query any object properties using the standard GraphQL syntax you are already familiar with. You can test your queries in the convenient GraphQL playground provided by the app at http://localhost:3000/api/graphql as well as in the right-side panel on the homepage, accessible by clicking the **Details** button at http://localhost:3000.
 
-- You can test your queries in the convenient GraphQL playground available at http://localhost:3000/api/graphql as well as in the right-side panel on the homepage available by clicking on **Details** button on the homepage http://localhost:3000.
-
-- The app provides eight preconfigured dynamic REST API endpoints by default, and you can add more endpoints to .env file.
+- The app provides eight preconfigured dynamic REST API endpoints by default, and you can add more endpoints by updating the .env file.
 
 ```bash
   # Default endpoint, which is provided by the locally starting json-server after you execute the command "npm run dev"
@@ -244,7 +242,7 @@ The adapter takes a few objects of each endpoint as samples, parses their struct
   https://dummyjson.com/users # This endpoint demonstrates name and schema conflict resilutions for two /users endpoints
 ```
 
-Automatically generated GraphQL queries for two latter endpoints would look as shown below. You can test them in the app playground http://localhost:3000/api/graphql.
+Automatically generated GraphQL queries for the two latter endpoints are shown below. You can test them in the app’s playground at http://localhost:3000/api/graphql.
 
 ```bash
 # The original object https://jsonplaceholder.typicode.com/users/9
@@ -589,6 +587,6 @@ Start the dev server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to load the home page and generate dynamic GraphQL schema.
+Open **http://localhost:3000** to load the homepage and generate the dynamic GraphQL schema.
 
-Open [http://localhost:3000/api/graphql](http://localhost:3000/api/graphql) to load the GraphQL playground and use the generated schema.
+Open **http://localhost:3000/api/graphql** to access the GraphQL playground and use the generated schema.
