@@ -24,6 +24,83 @@ This adapter web app allows you to transform your existing REST API endpoints to
 
 ![GraphQL queries presented as stable links ("permalinks")](docs/images/7_stable-links-permalinks.png 'GraphQL queries presented as stable links ("permalinks")')
 
+# Overview
+
+- Technical stack: Next.js 15, React 19, TypeScript, GraphQL with Apollo Server and Client, Apollo RestLink, public REST API endpoints,
+  Tailwind, Radix UI, local **json-server**, which starts with **concurrently** module and provides a local REST API endpoint
+  (made from a locallly stored JSON file **public/employees.json**).
+
+- I used Page Router in Next.js because Apollo Server does have full support for Next.js App Router yet (the state on Oct 14, 2024).
+
+- After you open the Homepage at http://localhost:3000, the adapter connects to all REST API URLs found in **.env**, retrieves and parses data samples.
+
+- Next, it generates GraphQL schema with typeDefs and resolvers for dynamic GraphQL endpoint, which becomes available
+  at http://localhost:3000/api/graphql
+
+- After that, Homepage gets and shows data of the first endpoint using a GraphQL query with regular server **fetch** from the GraphQL API (/api/graphql) like shown below.
+
+```javascript
+const query = {
+  operationName: "Employees",
+  variables: {},
+  query: `
+    query Employees {
+      employees {
+        id
+        userPrincipalName
+        displayName
+        jobTitle
+        department
+        city
+        country
+        companyName
+        officeLocation
+        onPremisesExtensionAttributes {
+            extensionAttribute1
+            extensionAttribute2
+            extensionAttribute3
+            extensionAttribute7
+            extensionAttribute9
+            extensionAttribute10
+            extensionAttribute11
+            extensionAttribute12
+            extensionAttribute5
+            extensionAttribute8
+        }
+        manager
+        managerUpn
+      }
+    }`,
+};
+const data = await fetch("http://localhost:3000/api/graphql", {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    Authorization: "Bearer <apiKey, for instance from .env>",
+  },
+  body: JSON.stringify(query),
+}).then((r) => r.json());
+```
+
+## Options available out of the box in this **Rest to GraphQL adapter** web app
+
+- GraphQL playground with familiar UI.
+
+- Dynamic evaluations of queries and results on the Homepage. The bitton **Details** opens the right-hand panel with more compact playground UI.
+
+- GraphQL queries for eight preconfigured endpoints are performed using the built In-Memory GraphQL schema.
+
+- GraphQL queries for other dynamic REST API endpoints (not included into default set) are done using Apollo RestLink component.
+
+- The adapter evaluates a few objects from the REST API, generates dynamic schema and executes the query.
+- The panel has two buttons, **Test** and **Submit**.
+
+  - **Test** provides quick evaluations of REST API endpoints. Clicking on the button generates GraphQL schema to the text area, executes GraphQL query and shows results in the main content pane. In case of errors, it shows the error message with details. This option makes it easy to test your own endpoints, for instance, https://dummyjson.com/products
+
+  - **Submit** generates stable URL for the currently open query (permalink) and redirects to it.
+    The URL can be reused in the same environment, for instance, after restarting the server.
+    The logic of redirects uses dynamic routes of Next.js (/url/[[...slug]].tsx) like /url/[encoded REST API URL]/[encoded GraphQL Query].
+
 # Typical use cases
 
 Let's put that you have typical REST API endpoints that produce JSON content in formats like https://jsonplaceholder.typicode.com/users or https://dummyjson.com/users
@@ -32,7 +109,7 @@ Let's put that you have typical REST API endpoints that produce JSON content in 
 
 So, you have sets of complex nested JSON objects that may look as shown below
 
-## Source JSON that came from REST API endpoints
+## Source JSON that comes from REST API endpoints
 
 ```json
 {
@@ -135,12 +212,11 @@ So, you have sets of complex nested JSON objects that may look as shown below
 
 ## Provided formats of GraphQL queries
 
-The adapter takes a few objects from each endpoint as samples, parses their structure and generates GraphQL schema and resolvers that allow
-you to query any object properties using GraphQL syntax.
+The adapter takes a few objects of each endpoint as samples, parses their structures and generates GraphQL schema with type definitions and resolvers that allow you to query any object properties using regular syntax of GraphQL familiar to you.
 
-- For instance, you can test them in the convenient playground http://localhost:3000/api/graphql or in the right-side panel on the homepage
-  available by clicking on **Details** button.
-- The app has eight preconfigured dynamic REST API endpoint URLs by default and you can add more. They can be added to .env file.
+- You can test your queries in the convenient GraphQL playground available at http://localhost:3000/api/graphql as well as in the right-side panel on the homepage
+  available by clicking on **Details** button on the homepage http://localhost:3000.
+- The app provides eight preconfigured dynamic REST API endpoints by default and you can add more to .env file.
 
 ```bash
   # Default endpoint, which is provided by the locally starting json-server after you execute the command "npm run dev"
@@ -468,80 +544,3 @@ query UsersDummyjson($userId: [ID], $anyText: [String]) {
   }
 }
 ```
-
-# Overview
-
-- Technical stack: Next.js 15, React 19, TypeScript, GraphQL with Apollo Server and Client, Apollo RestLink, public REST API endpoints,
-  Tailwind, Radix UI, local **json-server**, which starts with **concurrently** module and provides a local REST API endpoint
-  (made from a locallly stored JSON file **public/employees.json**).
-
-- I used Page Router in Next.js because Apollo Server does have full support for Next.js App Router yet (the state on Oct 14, 2024).
-
-- After you open the Homepage at http://localhost:3000, the adapter connects to all REST API URLs found in **.env**, retrieves and parses data samples.
-
-- Next, it generates GraphQL schema with typeDefs and resolvers for dynamic GraphQL endpoint, which becomes available
-  at http://localhost:3000/api/graphql
-
-- After that, Homepage gets and shows data of the first endpoint using a GraphQL query with regular server **fetch** from the GraphQL API (/api/graphql) like shown below.
-
-```javascript
-const query = {
-  operationName: "Employees",
-  variables: {},
-  query: `
-    query Employees {
-      employees {
-        id
-        userPrincipalName
-        displayName
-        jobTitle
-        department
-        city
-        country
-        companyName
-        officeLocation
-        onPremisesExtensionAttributes {
-            extensionAttribute1
-            extensionAttribute2
-            extensionAttribute3
-            extensionAttribute7
-            extensionAttribute9
-            extensionAttribute10
-            extensionAttribute11
-            extensionAttribute12
-            extensionAttribute5
-            extensionAttribute8
-        }
-        manager
-        managerUpn
-      }
-    }`,
-};
-const data = await fetch("http://localhost:3000/api/graphql", {
-  method: "POST",
-  headers: {
-    "content-type": "application/json",
-    Authorization: "Bearer <apiKey, for instance from .env>",
-  },
-  body: JSON.stringify(query),
-}).then((r) => r.json());
-```
-
-## Options available out of the box in this **Rest to GraphQL adapter** web app
-
-- GraphQL playground with familiar UI.
-
-- Dynamic evaluations of queries and results on the Homepage. The bitton **Details** opens the right-hand panel with more compact playground UI.
-
-- GraphQL queries for eight preconfigured endpoints are performed using the built In-Memory GraphQL schema.
-
-- GraphQL queries for other dynamic REST API endpoints (not included into default set) are done using Apollo RestLink component.
-
-- The adapter evaluates a few objects from the REST API, generates dynamic schema and executes the query.
-- The panel has two buttons, **Test** and **Submit**.
-
-  - **Test** provides quick evaluations of REST API endpoints. Clicking on the button generates GraphQL schema to the text area, executes GraphQL query and shows results in the main content pane. In case of errors, it shows the error message with details. This option makes it easy to test your own endpoints, for instance, https://dummyjson.com/products
-
-  - **Submit** generates stable URL for the currently open query (permalink) and redirects to it.
-    The URL can be reused in the same environment, for instance, after restarting the server.
-    The logic of redirects uses dynamic routes of Next.js (/url/[[...slug]].tsx) like /url/[encoded REST API URL]/[encoded GraphQL Query].
