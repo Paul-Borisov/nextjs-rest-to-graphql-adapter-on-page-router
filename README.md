@@ -587,6 +587,6 @@ Start the dev server
 npm run dev
 ```
 
-Open **http://localhost:3000** to load the homepage and generate the dynamic GraphQL schema.
+Open http://localhost:3000 to load the homepage and generate the dynamic GraphQL schema.
 
-Open **http://localhost:3000/api/graphql** to access the GraphQL playground and use the generated schema.
+Open http://localhost:3000/api/graphql to access the GraphQL playground and use the generated schema.
