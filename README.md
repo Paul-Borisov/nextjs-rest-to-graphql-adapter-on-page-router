@@ -557,7 +557,7 @@ query UsersDummyjson($userId: [ID], $anyText: [String]) {
 
 Clone this project.
 
-Review / adjust default settings found in .env.local
+Review / adjust default settings found in .env.local.
 
 ```bash
 NEXT_PUBLIC_restEndpoints="
