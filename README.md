@@ -26,7 +26,7 @@ This web app provides automatic transformation of REST API endpoints into GraphQ
 
 # Overview
 
-- Technical stack: Next.js 15, React 19, TypeScript, GraphQL with Apollo Server and Client, Apollo RestLink, Apollo Integrations for Next.js Page Router setup, public REST API endpoints, Tailwind, Radix UI, local **json-server**, which starts with **concurrently** module and provides a local REST API endpoint (made from a locallly stored JSON file **public/employees.json**).
+- Technical stack: Next.js 15, React 19, TypeScript, GraphQL with Apollo Server and Client, Apollo RestLink, Apollo Integrations for Next.js Page Router setup, public REST API endpoints with support for authentication headers, Tailwind, Radix UI, seamless dark/light theme support, mobile device compatibility, and a local **json-server**, which is started using the **concurrently** module and provides optional support for local REST API endpoints (sourced from a locally stored JSON file: **public/employees.json**).
 
 - I intentionally chose Next.js with the Page Router for developing this web application. The reason is that Apollo Server Integrations for Next.js do not yet have a stable package for the App Router. This was the state as of October 14, 2024.
 
