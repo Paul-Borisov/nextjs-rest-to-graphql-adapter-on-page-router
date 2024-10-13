@@ -16,7 +16,7 @@ This adapter web app allows you to transform your existing REST API endpoints to
 
 ![Right-hand panel with default entries](docs/images/4_right-hand-panel-with-default-entities.png "Right-hand panel with default entries")
 
-![Right-hand panel with default entries in dark system theme](docs/images/4_right-hand-panel-with-default-entities.png "Right-hand panel with default entries in dark system theme")
+![Right-hand panel with default entries in dark system theme](docs/images/4_right-hand-panel-with-default-entities-dark-mode.png "Right-hand panel with default entries in dark system theme")
 
 ![Testing other RESP API endpoints](docs/images/5_test-other-rest-endpoints.png "Testing other RESP API endpoints")
 
