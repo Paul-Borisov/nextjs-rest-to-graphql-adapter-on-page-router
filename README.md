@@ -581,7 +581,9 @@ Install modules
 npm i
 ```
 
-Start the dev server
+Start the dev servers
+
+- There are two servers managed by the **concurrently** package, running on ports 3000 and 4000 by default.
 
 ```bash
 npm run dev
