@@ -21,16 +21,20 @@ for (const restEndpointUri of allRestEndpointUris) {
   const endpointUri = `${restEndpointUri}${
     filter ? `${filterSeparator}${filter}` : ""
   }`;
-  const schema = await restApiToGraphqlTypeDefs(endpointUri, rootTypeName);
-  const funcName =
-    rootTypeName[0].toLocaleLowerCase() + rootTypeName.substring(1);
-  const query = `\n\ntype Query {
+  try {
+    const schema = await restApiToGraphqlTypeDefs(endpointUri, rootTypeName);
+    const funcName =
+      rootTypeName[0].toLocaleLowerCase() + rootTypeName.substring(1);
+    const query = `\n\ntype Query {
     ${funcName}(skip: Int, top: Int): [${rootTypeName}]
     find${rootTypeName}ById(id: [ID]): [${rootTypeName}]
     find${rootTypeName}ByText(text: [String]): [${rootTypeName}]
   }`;
-  definitions.push(query);
-  definitions.push(schema);
+    definitions.push(query);
+    definitions.push(schema);
+  } catch (e) {
+    console.log(restEndpointUri, e);
+  }
 }
 const typeDefs = gql`
   ${definitions.join("")}
@@ -39,17 +43,26 @@ const typeDefs = gql`
 for (const restEndpointUri of allRestEndpointUris) {
   let { entityName, rootTypeName } = getRegisteredEntity(restEndpointUri);
   const queryAdapter = new RestToGraphqlQueryAdapter(restEndpointUri);
-  const queryText =
-    (await queryAdapter.getGraphqlQueryText(entityName, rootTypeName)) ||
-    "ERROR";
-  const results = await queryAdapter.getGraphqlDataUsingRestLink(
-    entityName,
-    rootTypeName,
-    queryText
-  );
+
+  let results: Awaited<
+    ReturnType<typeof queryAdapter.getGraphqlDataUsingRestLink>
+  >;
+  try {
+    const queryText =
+      (await queryAdapter.getGraphqlQueryText(entityName, rootTypeName)) || "";
+    if (!queryText) continue;
+    results = await queryAdapter.getGraphqlDataUsingRestLink(
+      entityName,
+      rootTypeName,
+      queryText
+    );
+  } catch (e) {
+    console.log(restEndpointUri, e);
+    continue;
+  }
+
   const data =
     Object.values(results.data).find((value) => Array.isArray(value)) || [];
-
   resolvers.Query = {
     ...resolvers.Query,
     ...{
