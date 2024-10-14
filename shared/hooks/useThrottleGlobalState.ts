@@ -46,7 +46,7 @@ const useThrottleWithGlobalState = (
     });
   };
 
-  return (...args: any) => {
+  return function (...args: any) {
     const key = `${func.name}:${JSON.stringify(args)}`;
     const keyCanRun = `canRun_${md5(func.toString())}`;
     const keyStarted = `started${key}`;
@@ -64,7 +64,7 @@ const useThrottleWithGlobalState = (
       if (debug) console.log(`${args} is running`);
       if (canRun) {
         func(...args);
-        const timeoutId = setTimeout(() => {
+        const timeoutId = setTimeout(function () {
           setGlobalState(keyCanRun, true);
           cleanupGlobalState(keyCanRun, keyStarted, keyTimeout);
         }, delayInMilliseconds);

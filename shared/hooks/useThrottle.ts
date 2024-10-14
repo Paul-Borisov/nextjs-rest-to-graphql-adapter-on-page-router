@@ -24,13 +24,13 @@ const useThrottle = (
   const refTimeout = useRef<ReturnType<typeof setTimeout>>();
   const refStarted = useRef<number>(0);
 
-  return (...args: any) => {
+  return function (...args: any) {
     if (refCanRun.current) {
       refCanRun.current = false;
       refStarted.current = Date.now();
       if (debug) console.log(`${args} is running`);
       func(...args);
-      const timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(function () {
         refCanRun.current = true;
       }, delayInMilliseconds);
       refTimeout.current = timeoutId;

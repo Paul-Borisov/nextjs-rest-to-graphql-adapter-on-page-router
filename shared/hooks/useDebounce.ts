@@ -15,9 +15,9 @@ export const useDebounce = (
     };
   }, []);
 
-  return (...args: any) => {
+  return function (...args: any) {
     if (refTimeout?.current) clearTimeout(refTimeout.current);
-    refTimeout.current = setTimeout(() => {
+    refTimeout.current = setTimeout(function () {
       func(...args);
     }, delayInMilliseconds);
   };
