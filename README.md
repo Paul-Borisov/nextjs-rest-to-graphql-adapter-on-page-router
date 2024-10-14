@@ -620,7 +620,7 @@ Start the service, and the app should load with the homepage displayed.
 
 The package **concurrently** does not support standalone mode of Next.js.
 
-- If you wish to use json-server for hosting http://localhost:4000/employees?\_sort=displayName&\_order=asc
+- If you wish to use json-server for hosting http://localhost:4000/employees?...
   you should start them in a separate terminal:
 
   - npm run server
