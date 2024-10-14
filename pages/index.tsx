@@ -36,11 +36,10 @@ const parseParams = (restEndpointUri: string, slug?: string[]) => {
 };
 
 export const getServerSideProps = (async (params) => {
+  let restEndpointUri =
+    (allRestEndpointUris?.length && allRestEndpointUris[0]) || "";
+  let modifiedQueryText = "";
   try {
-    let restEndpointUri =
-      (allRestEndpointUris?.length && allRestEndpointUris[0]) || "";
-    let modifiedQueryText = "";
-
     const slug = params.params?.slug;
     let showResetToDefault = false;
     if (Array.isArray(slug)) {
@@ -77,11 +76,12 @@ export const getServerSideProps = (async (params) => {
     return { props: { repo } };
   } catch (e) {
     const errorMessage =
-      typeof e === "string"
+      encodeURIComponent(`${restEndpointUri}: `) +
+      (typeof e === "string"
         ? encodeURIComponent(e)
         : e && typeof e === "object"
         ? encodeURIComponent(JSON.stringify(e))
-        : encodeURIComponent("Undefined error");
+        : encodeURIComponent("Undefined error"));
     return {
       redirect: {
         destination: `/500?errorMessage=${errorMessage}`,
