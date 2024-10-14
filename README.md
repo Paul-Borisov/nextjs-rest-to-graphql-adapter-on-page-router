@@ -600,7 +600,7 @@ Open http://localhost:3000/api/graphql to access the GraphQL playground and use 
 
 You can deploy this web app to **Azure App Service**.
 
-- Remove or comment out the line http://localhost:4000/employees?\_sort=displayName&\_order=asc in .env.local (using # or //)
+- Remove or comment out the line [http://localhost:4000/employees?\_sort=displayName&\_order=asc](http://localhost:4000/employees?_sort=displayName&_order=asc) in .env.local (using # or //)
 
 - Uncomment the line **output: "standalone"** in [next.config.mjs](next.config.mjs) > nextConfig
 
@@ -620,7 +620,7 @@ Start the service, and the app should load with the homepage displayed.
 
 The package **concurrently** does not support standalone mode of Next.js.
 
-- If you wish to use json-server for hosting http://localhost:4000/employees?...
+- If you wish to use json-server for hosting [http://localhost:4000/employees?\_sort=displayName&\_order=asc](http://localhost:4000/employees?_sort=displayName&_order=asc)
   you should start them in a separate terminal:
 
   - npm run server
