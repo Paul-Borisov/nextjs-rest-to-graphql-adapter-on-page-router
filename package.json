@@ -7,9 +7,12 @@
     "prod": "concurrently \"npm run server\" \"npm run start\"",
     "dev": "next dev --turbo",
     "build": "next build",
+    "build-standalone-win": "next build && @powershell copy .next/static .next/standalone/.next/static -recurse -force",
+    "build-standalone-unix": "next build && cp -r -f .next/static .next/standalone/.next/static",
     "start": "next start",
     "lint": "next lint",
-    "server": "json-server ./public/employees.json -p 4000"
+    "server": "json-server ./public/employees.json -p 4000",
+    "standalone": "node --dns-result-order=ipv4first .next/standalone/server.js"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",

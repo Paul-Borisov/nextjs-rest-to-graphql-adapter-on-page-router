@@ -595,3 +595,38 @@ npm run all
 Open http://localhost:3000 to load the homepage and generate the dynamic GraphQL schema.
 
 Open http://localhost:3000/api/graphql to access the GraphQL playground and use the generated schema.
+
+# Deploy to Azure App Service
+
+You can deploy this web app to **Azure App Service**.
+
+- Remove or comment out the line http://localhost:4000/employees?\_sort=displayName&\_order=asc in .env.local (using # or //)
+
+- Add the line **output: "standalone"** to next.config.mjs > nextConfig
+
+- Build the app using the command npm build-standalone-win (or build-standalone-unix)
+
+- Deploy the entire folder **.next** to Azure App Service.
+
+![Deploy to Azure App Service](docs/images/8_easy-manual-deployment-to-azure-app-service.png "Deploy to Azure App Service")
+
+## Run on Azure App Service
+
+Start the service, and the app should load with the homepage displayed.
+
+![Running on Azure App Service](docs/images/9_running-on-azure-app-service.png "Running on Azure App Service")
+
+## Running a standalone build locally
+
+The package **concurrently** does not support standalone mode of Next.js.
+
+- If you wish to use json-server for hosting http://localhost:4000/employees?\_sort=displayName&\_order=asc
+  you should start them in a separate terminal:
+
+  - npm run server
+
+- After that, open the second terminal and execute
+
+  - npm run standalone (node --dns-result-order=ipv4first .next/standalone/server.js)
+
+    Note the parameter --dns-result-order=ipv4first, which eliminates standard connectivity errors on the IP6 address ::1.

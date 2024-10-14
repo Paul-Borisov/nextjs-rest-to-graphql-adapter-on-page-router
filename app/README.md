@@ -1,0 +1,3 @@
+This empty app folder ensures that the Next.js build process generates at least an empty app-paths-manifest.json file, which is required for correct deployments of standalone builds, such as when deploying to Azure App Service.
+
+For example, an empty file must be present in .next/standalone/.next/server/app-paths-manifest.json when an Azure App Service container starts. In the Azure App Service container, this corresponds to the Unix path /home/site/wwwroot/standalone/.next/server/app-paths-manifest.json. Pure Page Router builds do not generate this file, which may result in non-functional deployments.
