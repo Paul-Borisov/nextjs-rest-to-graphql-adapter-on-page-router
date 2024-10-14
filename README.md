@@ -602,7 +602,7 @@ You can deploy this web app to **Azure App Service**.
 
 - Remove or comment out the line http://localhost:4000/employees?\_sort=displayName&\_order=asc in .env.local (using # or //)
 
-- Add the line **output: "standalone"** to next.config.mjs > nextConfig
+- Uncomment the line **output: "standalone"** in [next.config.mjs](next.config.mjs) > nextConfig
 
 - Build the app using the command npm build-standalone-win (or build-standalone-unix)
 
