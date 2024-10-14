@@ -18,7 +18,6 @@ const ensureMapUriToEntityName = () => {
     if (uniqueEntries.has(uniqueEntry)) {
       continue;
     }
-    console.log(uniqueEntry);
     uniqueEntries.add(uniqueEntry);
 
     const uri = new URL(restEndpointUri);
