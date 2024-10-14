@@ -9,7 +9,15 @@ const mapUriToEntityName = new Map<string, RegisteredEntity>();
 const ensureMapUriToEntityName = () => {
   if (mapUriToEntityName.size) return;
   const uniqueEntityNames = new Set<string>();
+  const uniqueEntries = new Set<string>();
   for (const restEndpointUri of allRestEndpointUris) {
+    const uniqueEntry = restEndpointUri
+      .toLocaleLowerCase()
+      .replace(/\/´+$/, "")
+      .trim();
+    if (uniqueEntries.has(uniqueEntry)) continue;
+    uniqueEntries.add(uniqueEntry);
+
     const uri = new URL(restEndpointUri);
     const pathname = uri.pathname;
     let entityName = pathname.substring(pathname.lastIndexOf("/") + 1);
@@ -49,7 +57,7 @@ export const findArrayOfObjects = (rootObject: GraphQLSchemaInput) => {
     if (Array.isArray(obj)) return obj;
   }
 
-  throw "Undetermined JSON format: array of object not found";
+  throw "Undetermined JSON format: array of objects not found";
 };
 
 export const getNewEntity = (restEndpointUri: string) => {
