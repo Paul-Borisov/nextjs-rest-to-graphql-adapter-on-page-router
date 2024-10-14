@@ -106,7 +106,7 @@ const apolloServer = new ApolloServer({
   plugins: [
     <ApolloServerPlugin<BaseContext>>(
       ApolloServerPluginLandingPageGraphQLPlayground({
-        title: "REST to GraphQL Afapter",
+        title: "REST to GraphQL Adapter",
       })
     ),
   ],
