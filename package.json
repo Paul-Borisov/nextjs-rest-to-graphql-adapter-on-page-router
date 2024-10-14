@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run dev\"",
+    "all": "concurrently \"npm run server\" \"npm run dev\"",
     "prod": "concurrently \"npm run server\" \"npm run start\"",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

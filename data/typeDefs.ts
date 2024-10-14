@@ -12,7 +12,7 @@ export type GraphQLSchemaInput = {
 export const allRestEndpointUris = [
   ...(process.env.NEXT_PUBLIC_restEndpoints?.split(/,|,?\n/)
     .map((url) => url.trim())
-    .filter((url) => url) || []),
+    .filter((url) => url && url.toLocaleLowerCase().startsWith("http")) || []),
 ];
 
 // create store => CreateStore

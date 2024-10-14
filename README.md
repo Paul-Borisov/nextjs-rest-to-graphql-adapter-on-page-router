@@ -586,7 +586,10 @@ Start the dev servers
 - There are two servers managed by the **concurrently** package, running on ports 3000 and 4000 by default.
 
 ```bash
-npm run dev
+npm run all
+# Alternatively, use default "npm run dev" to start only the main dev server without starting json-server.
+# In this case, remove or comment out the entry http://localhost:4000/employees?_sort=displayName&_order=asc in .env.local
+# - You can use # or // to comment it out
 ```
 
 Open http://localhost:3000 to load the homepage and generate the dynamic GraphQL schema.
