@@ -587,7 +587,7 @@ Start the dev servers
 
 ```bash
 npm run all
-# Alternatively, use default "npm run dev" to start only the main dev server without starting json-server.
+# Alternatively, use default "npm run dev" to start only the main dev server without starting a local json-server.
 # In this case, remove or comment out the entry http://localhost:4000/employees?_sort=displayName&_order=asc in .env.local
 # - You can use # or // to comment it out like #http://localhost:4000/employees?_sort=displayName&_order=asc
 ```
