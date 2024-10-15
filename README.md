@@ -325,6 +325,7 @@ query Users($userId: [ID], $anyText: [String]) {
     }
   }
 }
+# Variables: {"userId": [5,8,7],"anyText": ["Keebler","Deckow"]}
 ```
 
 ```bash
@@ -549,6 +550,7 @@ query UsersDummyjson($userId: [ID], $anyText: [String]) {
     role
   }
 }
+# Variables: {"userId": [7,30,21],"anyText": ["Wisconsin","Ethereum","Connecticut"]}
 ```
 
 # Getting Started
