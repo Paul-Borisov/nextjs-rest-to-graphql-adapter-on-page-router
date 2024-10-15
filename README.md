@@ -630,6 +630,6 @@ The package **concurrently** does not support standalone mode of Next.js.
 
 - After that, open the second terminal and execute
 
-  - npm run standalone (node --dns-result-order=ipv4first .next/standalone/server.js)
+  - npm run standalone (which is translated to "node --dns-result-order=ipv4first .next/standalone/server.js")
 
     Note the parameter --dns-result-order=ipv4first, which eliminates standard connectivity errors on the IP6 address ::1.
