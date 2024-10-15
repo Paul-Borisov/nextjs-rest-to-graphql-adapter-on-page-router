@@ -220,7 +220,7 @@ Imagine you have several REST API endpoints that return JSON content in standard
 
 The adapter is designed to handle this complexity. It takes a few sample objects from each endpoint, parses their structures, and generates a GraphQL schema with type definitions and resolvers. This enables you to query any object properties using the standard GraphQL syntax you are already familiar with. You can test your queries in the convenient GraphQL playground provided by the app at http://localhost:3000/api/graphql as well as in the right-side panel on the homepage, accessible by clicking the **Details** button at http://localhost:3000.
 
-- The app provides eight preconfigured dynamic REST API endpoints by default, and you can add more endpoints by updating the .env file.
+- The app provides eight preconfigured dynamic REST API endpoints by default, and you can replace them and add other endpoints by updating the .env file.
 
 ```bash
   # Default endpoint, which is provided by the locally starting json-server after you execute the command "npm run dev"
