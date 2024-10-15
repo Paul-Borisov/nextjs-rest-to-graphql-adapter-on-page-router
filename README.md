@@ -225,7 +225,7 @@ The adapter is designed to handle this complexity. It takes a few sample objects
 ```bash
   # Default endpoint, which is provided by the locally starting json-server after you execute the command "npm run dev"
   # - The project uses concurrently to start both http://localhost:3000 and http://localhost:4000
-  http://localhost:4000/employees?\_sort=displayName&\_order=asc
+  [http://localhost:4000/employees?\_sort=displayName&\_order=asc](http://localhost:4000/employees?_sort=displayName&_order=asc)
 
   https://jsonplaceholder.typicode.com/posts
 
