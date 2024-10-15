@@ -109,7 +109,8 @@ const responseTransformer = async (response: Response) => {
 
 # Typical use cases
 
-Imagine you have several REST API endpoints that return JSON content in standard array-based formats, such as an "array of objects" or "a root object containing an array of objects" or similar structures. The JSON format transformer can easily be adapted to handle more complex scenarios. For instance, your REST API might initially provide a set of complex, multi-level JSON objects nested within each other
+Imagine you have several REST API endpoints that return JSON content in standard array-based formats,
+such as an "array of objects" or "a root object containing an array of objects" or similar structures.
 
 - The JSON format transformer can easily be adapted to handle more complex scenarios.
 
@@ -325,6 +326,7 @@ query Users($userId: [ID], $anyText: [String]) {
     }
   }
 }
+# Variables: {"userId": [5,8,7],"anyText": ["Keebler","Deckow"]}
 ```
 
 ```bash
@@ -549,6 +551,7 @@ query UsersDummyjson($userId: [ID], $anyText: [String]) {
     role
   }
 }
+# Variables: {"userId": [7,30,21],"anyText": ["Wisconsin","Ethereum","Connecticut"]}
 ```
 
 # Getting Started
