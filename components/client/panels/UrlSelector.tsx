@@ -5,25 +5,30 @@ import { Select } from "@radix-ui/themes";
 import { splitByUppercaseLetters } from "@/shared/utils/utils";
 
 type Props = {
-  defaultUrl: string;
+  selectedUrl: string;
   onValueChange: (value: string) => void;
 };
 
-export default function UrlSelector({ defaultUrl, onValueChange }: Props) {
+export default function UrlSelector({ selectedUrl, onValueChange }: Props) {
   const allUrls = Array.from(
     // Ensure that values do not repeat
-    new Set([...allRestEndpointUris, defaultUrl])
+    new Set([...allRestEndpointUris, selectedUrl])
   );
 
   return (
-    <Select.Root defaultValue={defaultUrl} onValueChange={onValueChange}>
+    <Select.Root value={selectedUrl} onValueChange={onValueChange}>
       <Select.Trigger variant="soft" />
       <Select.Content>
         {allUrls.map((url) => {
           let entity = getRegisteredEntity(url);
           if (!entity) {
             const queryAdapter = new RestToGraphqlQueryAdapter(url);
-            entity = queryAdapter.getEntity();
+            try {
+              entity = queryAdapter.getEntity();
+            } catch (e) {
+              console.log(e);
+              return;
+            }
           }
           return (
             <Select.Item key={url} value={url}>

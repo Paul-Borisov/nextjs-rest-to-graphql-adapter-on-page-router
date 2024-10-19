@@ -1,8 +1,14 @@
 import { allRestEndpointUris, GraphQLSchemaInput } from "./typeDefs";
-import { ApolloClient, NormalizedCacheObject, gql } from "@apollo/client";
+import {
+  ApolloClient,
+  FetchPolicy,
+  NormalizedCacheObject,
+  gql,
+} from "@apollo/client";
 import getApolloCLient from "./apolloClient";
 import {
   findArrayOfObjects,
+  getApiKeyForRestEndpointUri,
   getNewEntity,
   getRegisteredEntity,
   mergeProperties,
@@ -18,21 +24,46 @@ const responseTransformer = async (response: Response) => {
 export default class RestToGraphqlQueryAdapter {
   private client: ApolloClient<NormalizedCacheObject>;
   private restEndpointUri: string;
+  public headers: Record<string, string> = {};
 
-  constructor(restEndpointUri: string) {
+  constructor(restEndpointUri: string, apiKey?: string) {
     const endpointUri = restEndpointUri;
     this.client = getApolloCLient(endpointUri, true, responseTransformer);
     this.restEndpointUri = endpointUri;
+    if (!apiKey) {
+      const isClient = typeof window !== "undefined";
+      if (!isClient) {
+        const apiKey = this.isRegisteredUrl()
+          ? getApiKeyForRestEndpointUri(restEndpointUri)
+          : undefined;
+        this.addAuthorizationHeader(apiKey);
+      }
+    } else {
+      this.addAuthorizationHeader(apiKey);
+    }
+  }
+
+  addAuthorizationHeader(apiKey?: string) {
+    if (apiKey) {
+      this.headers["Authorization"] = `Bearer ${apiKey}`;
+    }
   }
 
   isRegisteredUrl = () => {
-    return allRestEndpointUris.some(
-      (url) =>
+    return allRestEndpointUris.some((url) => {
+      if (
         url.toLocaleLowerCase() === this.restEndpointUri.toLocaleLowerCase()
-    );
+      ) {
+        return true;
+      }
+      const reStripSearchParams = /(\?|#).+/;
+      const urlPath = url.replace(reStripSearchParams, "").toLocaleLowerCase();
+      const testPath = this.restEndpointUri
+        ?.replace(reStripSearchParams, "")
+        .toLocaleLowerCase();
+      return urlPath === testPath;
+    });
   };
-
-  getApiKey = () => process.env.apiKeyRest || ""; // Get you API key or auth token here
 
   private async getObjectSamplesRest(
     filter: string = process.env.NEXT_PUBLIC_dataSampleFilter || ""
@@ -42,7 +73,7 @@ export default class RestToGraphqlQueryAdapter {
       `${this.restEndpointUri}${filter ? `${filterSeparator}${filter}` : ""}`,
       {
         method: "GET",
-        headers: { Authorization: `Bearer ${this.getApiKey()}` },
+        headers: this.headers,
       }
     )
       .then((r) => {
@@ -72,7 +103,9 @@ export default class RestToGraphqlQueryAdapter {
   async getGraphqlDataUsingRestLink(
     entityName: string,
     rootTypeName: string,
-    queryText: string
+    queryText: string,
+    headers: Record<string, string> = {}, // Use custom headers, for instance, to customize the authorization scenario
+    fetchPolicy: FetchPolicy = "no-cache"
   ) {
     const error = this.checkInputArgs(entityName, queryText);
     if (error) return error;
@@ -88,16 +121,15 @@ export default class RestToGraphqlQueryAdapter {
     const query = gql`
       ${newQueryText}
     `;
-
-    const authToken = this.getApiKey();
-
+    let mergedHeaders: GraphQLSchemaInput = {};
+    mergedHeaders = mergeProperties(mergedHeaders, this.headers);
+    mergedHeaders = mergeProperties(mergedHeaders, headers);
     const result = this.client.query({
       query,
       context: {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+        headers: mergedHeaders,
       },
+      fetchPolicy,
     });
 
     return result;
@@ -156,9 +188,10 @@ export default class RestToGraphqlQueryAdapter {
     let entityName, rootTypeName;
     if (this.isRegisteredUrl()) {
       const existingEntity = getRegisteredEntity(this.restEndpointUri);
-      entityName = existingEntity.entityName;
-      rootTypeName = existingEntity.rootTypeName;
-    } else {
+      entityName = existingEntity?.entityName;
+      rootTypeName = existingEntity?.rootTypeName;
+    }
+    if (!(entityName && rootTypeName)) {
       const newEntity = getNewEntity(this.restEndpointUri);
       entityName = newEntity.entityName;
       rootTypeName = newEntity.rootTypeName;
@@ -168,3 +201,5 @@ export default class RestToGraphqlQueryAdapter {
     return entity;
   }
 }
+
+export class RestToGraphqlQueryAdapterClient extends RestToGraphqlQueryAdapter {}

@@ -22,7 +22,14 @@ export default async function handler(
       Globals.paramRestRequestUri as keyof typeof payload
     ] as string;
 
-    const queryAdapter = new RestToGraphqlQueryAdapter(restEndpointUri);
+    const restApiKey = payload[
+      Globals.paramRestApiKey as keyof typeof payload
+    ] as string;
+
+    // This is an apiKey submitted by the client explicitly
+    let apiKey = restApiKey ? restApiKey : undefined;
+    // apiKey for registered restEndpointUris will be added automatically within RestToGraphqlQueryAdapter
+    const queryAdapter = new RestToGraphqlQueryAdapter(restEndpointUri, apiKey);
     let { entityName, rootTypeName } = queryAdapter.getEntity();
 
     const queryText =
