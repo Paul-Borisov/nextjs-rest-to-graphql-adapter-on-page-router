@@ -13,16 +13,16 @@ function AdjustFormFields({
   setErrorMessage: (value: string) => void;
 }) {
   const getData = async () => {
-    const queryAdapter = new RestToGraphqlQueryAdapterClient(restEndpointUri);
-    const isAdHocUrl = !queryAdapter.isRegisteredUrl();
-    if (isAdHocUrl) {
-      queryAdapter.addAuthorizationHeader(apiKeyEnteredOnClient);
-    }
-    let { entityName, rootTypeName } = queryAdapter.getEntity();
-
-    const origin =
-      typeof window !== undefined ? window.location.origin : undefined;
     try {
+      const queryAdapter = new RestToGraphqlQueryAdapterClient(restEndpointUri);
+      const isAdHocUrl = !queryAdapter.isRegisteredUrl();
+      if (isAdHocUrl) {
+        queryAdapter.addAuthorizationHeader(apiKeyEnteredOnClient);
+      }
+      let { entityName, rootTypeName } = queryAdapter.getEntity();
+
+      const origin =
+        typeof window !== undefined ? window.location.origin : undefined;
       let data = queryAdapter.isRegisteredUrl()
         ? await queryAdapter.getGraphqlDataUsingApi(
             rootTypeName,

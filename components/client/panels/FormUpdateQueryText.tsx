@@ -168,7 +168,7 @@ export default function FormUpdateQueryText({
     <>
       {changeHome}
       <div className="flex gap-5 items-center pb-3">
-        <div className="font-semibold">REST API URL</div>
+        <div className="font-semibold whitespace-nowrap">REST API URL</div>
         <UrlSelector selectedUrl={url} onValueChange={handleSelectedValue} />
         <div className="text-red-600">{errorMessage}</div>
       </div>

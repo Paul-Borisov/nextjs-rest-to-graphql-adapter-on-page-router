@@ -4,6 +4,42 @@ Developers have been using REST APIs for years to interact with backend data. Ho
 
 This web app provides automatic transformation of REST API endpoints into GraphQL schema entities, making them available for regular GraphQL queries with filters, field selections, dynamic variables, and free-text search. The app supports preconfigured "plug-and-play" REST API endpoints as well as dynamic REST data sources.
 
+## Version 1.1, Oct 19, 2024
+
+This release supports optional individual API KEYs per each REST API endpoint.
+
+- Optional API Keys for pre-registered REST API endpoints should be configured in .env (.env.local) under the key SERVER_ONLY_restApiKeys
+  like shown below
+
+  ```bash
+  # Optionally, you can add API keys for some of the endpoints above.
+  # Keys support regex notation. Their values should be separated with a colon.
+  # API KEYS configured here stay on the server side and are never exposed to the client side.
+  SERVER_ONLY_restApiKeys="
+    employees:ApiKey1
+    albums$:ApiKeyForAlbums
+    dummyjson.+users$:ApiKeyWithRegexForTheLastEndpoint
+  "
+  # These REST API endpoints are exposed on both the server and the client sides.
+  NEXT_PUBLIC_restEndpoints="
+    http://localhost:4000/employees?_sort=displayName&_order=asc
+    https://jsonplaceholder.typicode.com/posts
+    https://jsonplaceholder.typicode.com/comments
+    https://jsonplaceholder.typicode.com/albums
+    https://jsonplaceholder.typicode.com/photos
+    https://jsonplaceholder.typicode.com/todos
+    https://jsonplaceholder.typicode.com/users
+    https://dummyjson.com/users"
+  ```
+
+- API Keys for "ad-hoc" REST API endpoints can be entered directly into the UI of the right-hand panel "Compact playground".
+
+## Version 1.0
+
+This was the initial release of the main adapter's functionality.
+
+- This version provided a optional generic placeholder to support a single global API KEY shared by all REST endpoints.
+
 # Screenshots
 
 ![Default Homepage in dark system theme](docs/images/1_default-homepage-dark-mode.png "Default Homepage in dark system theme")
@@ -103,9 +139,9 @@ const responseTransformer = async (response: Response) => {
 
   - The button **Test** provides quick evaluations of REST API endpoints. Clicking on the button generates GraphQL schema to the text area, executes GraphQL query and shows results in the main (central) content pane. In case of errors, it shows error messages with details. This option makes it easy to bring and test new endpoints not included in the default set, for instance, https://dummyjson.com/products
 
-  - The button **Submit** generates a stable URL for the currently open query ("permalink") and redirects to this URL.
+  - The button **Submit** generates a stable link URL for the currently open query ("permalink") and redirects to this URL.
     The URL can be saved and reused in the same environment, for instance, after restarting the server.
-    The logic of redirects uses dynamic routes of Next.js (/url/[[...slug]].tsx) that look like **/url/[encoded REST API URL]/[encoded GraphQL Query]**.
+    The logic of redirects uses dynamic routes of Next.js (/url/[[...slug]].tsx) that look like **/url/[encoded REST API URL]/[encoded GraphQL Query]**. Stable links are not generated for "ad-hoc" REST API endpoints in case if a dynamic individual API KEY was entered for it.
 
 # Typical use cases
 

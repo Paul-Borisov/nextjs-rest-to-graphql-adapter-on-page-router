@@ -23,7 +23,12 @@ export default function UrlSelector({ selectedUrl, onValueChange }: Props) {
           let entity = getRegisteredEntity(url);
           if (!entity) {
             const queryAdapter = new RestToGraphqlQueryAdapter(url);
-            entity = queryAdapter.getEntity();
+            try {
+              entity = queryAdapter.getEntity();
+            } catch (e) {
+              console.log(e);
+              return;
+            }
           }
           return (
             <Select.Item key={url} value={url}>
