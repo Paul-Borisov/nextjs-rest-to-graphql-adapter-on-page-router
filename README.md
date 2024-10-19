@@ -8,19 +8,19 @@ This web app provides automatic transformation of REST API endpoints into GraphQ
 
 This release supports optional individual API KEYs per each REST API endpoint.
 
-- Optional API Keys for pre-registered REST API endpoints should be configured in .env (.env.local) under the key SERVER_ONLY_restApiKeys
-  like shown below
+- Optional API keys for pre-registered REST API endpoints should be configured in the .env or .env.local file under
+  the SERVER_ONLY_restApiKeys key, as shown below:
 
   ```bash
   # Optionally, you can add API keys for some of the endpoints above.
-  # Keys support regex notation. Their values should be separated with a colon.
-  # API KEYS configured here stay on the server side and are never exposed to the client side.
+  # Keys support regex notation, and their values should be separated by a colon.
+  # API keys configured here remain on the server side and are never exposed to the client.
   SERVER_ONLY_restApiKeys="
     employees:ApiKey1
     albums$:ApiKeyForAlbums
     dummyjson.+users$:ApiKeyWithRegexForTheLastEndpoint
   "
-  # These REST API endpoints are exposed on both the server and the client sides.
+  # These REST API endpoints are exposed on both the server and client sides.
   NEXT_PUBLIC_restEndpoints="
     http://localhost:4000/employees?_sort=displayName&_order=asc
     https://jsonplaceholder.typicode.com/posts
