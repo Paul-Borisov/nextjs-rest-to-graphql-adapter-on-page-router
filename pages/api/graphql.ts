@@ -1,5 +1,6 @@
 // https://hackernoon.com/setting-up-a-graphql-server-and-client-in-nextjs
 // https://blog.logrocket.com/complete-guide-to-graphql-playground/
+//"server-only"
 import { allRestEndpointUris, restApiToGraphqlTypeDefs } from "@/data/typeDefs";
 import { ApolloServer, ApolloServerPlugin, BaseContext } from "@apollo/server";
 import {
@@ -42,6 +43,7 @@ const typeDefs = gql`
 
 for (const restEndpointUri of allRestEndpointUris) {
   let { entityName, rootTypeName } = getRegisteredEntity(restEndpointUri);
+
   const queryAdapter = new RestToGraphqlQueryAdapter(restEndpointUri);
 
   let results: Awaited<
@@ -51,6 +53,7 @@ for (const restEndpointUri of allRestEndpointUris) {
     const queryText =
       (await queryAdapter.getGraphqlQueryText(entityName, rootTypeName)) || "";
     if (!queryText) continue;
+
     results = await queryAdapter.getGraphqlDataUsingRestLink(
       entityName,
       rootTypeName,

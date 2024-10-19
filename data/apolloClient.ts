@@ -13,6 +13,16 @@ const singletonForUrl = (endpointUri: string) => {
   return new ApolloClient({
     uri: endpointUri,
     cache: new InMemoryCache(),
+    // defaultOptions: {
+    //   watchQuery: {
+    //     fetchPolicy: "no-cache",
+    //     errorPolicy: "ignore",
+    //   },
+    //   query: {
+    //     fetchPolicy: "no-cache",
+    //     errorPolicy: "all",
+    //   },
+    // },
   });
 };
 

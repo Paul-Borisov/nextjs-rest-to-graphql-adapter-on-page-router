@@ -141,3 +141,33 @@ export const mergeProperties = (
   }
   return target;
 };
+
+export const getApiKeyForRestEndpointUri = (restEndpointUri: string) => {
+  const isClient = typeof window !== "undefined";
+  if (isClient) {
+    throw new Error("Access to apiKey is forbidden from the client");
+  }
+
+  const allApiKeys = [
+    ...(process.env.SERVER_ONLY_restApiKeys?.split(/,|,?\n/).map((key) =>
+      key.trim()
+    ) ||
+      //.filter((key) => key && /^(#|\/\/)/.test(key))
+      []),
+  ];
+
+  let returnValue;
+  for (const key of allApiKeys) {
+    const keyValue = key.split(":");
+    if (keyValue?.length !== 2) continue;
+    const re = keyValue[0];
+    const apiKey = keyValue[1];
+    returnValue =
+      restEndpointUri.toLocaleLowerCase().includes(re.toLocaleLowerCase()) ||
+      new RegExp(re, "i").test(restEndpointUri)
+        ? apiKey
+        : undefined;
+    if (returnValue) break;
+  }
+  return returnValue;
+};

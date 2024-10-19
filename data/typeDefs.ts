@@ -1,3 +1,4 @@
+import RestToGraphqlQueryAdapter from "./restToGraphqlQueryAdapter";
 import { mergeProperties } from "./utils";
 
 export type GraphQLSchemaInput = {
@@ -28,7 +29,11 @@ export async function restApiToGraphqlTypeDefs(
   restEndpointUri: string,
   rootTypeName: string = "Item"
 ): Promise<string> {
-  const data = await fetch(restEndpointUri).then((r) => r.json());
+  const queryAdapter = new RestToGraphqlQueryAdapter(restEndpointUri);
+  const headers = queryAdapter.headers;
+  const data = await fetch(restEndpointUri, { method: "GET", headers }).then(
+    (r) => r.json()
+  );
 
   let itemsArray;
 

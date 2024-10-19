@@ -31,8 +31,8 @@ export default function ContentPanel({
 
   const tableContent = useMemo(
     () => (
-      <section className="w-[98vw] h-auto overflow-y-auto whitespace-pre-wrap break-words text-[90%] flex justify-center">
-        <div className="w-fit h-[calc(100vh_-_80px)] max-w-[98vw]">
+      <section className="w-[100%] h-auto overflow-y-auto whitespace-pre-wrap break-words text-[90%] flex justify-center">
+        <div className="w-fit h-[calc(100vh_-_80px)] max-w-[100%]">
           {formatData(data, rootObjectName)}
         </div>
       </section>
