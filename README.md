@@ -658,6 +658,7 @@ You can deploy this web app to **Azure App Service**.
   ```bash
     // next.config.mjs
     // ...
+    //output: "standalone", // Use this flag to ensure successful deployments to Azure App Service.
     env: {
       // Next.js has a known issue: during production builds in "standalone" mode, it does not export server-side variables from .env.local.
       // To resolve this, you should use .env or .env.production for standalone builds.
