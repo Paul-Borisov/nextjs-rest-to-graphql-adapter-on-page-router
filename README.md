@@ -4,7 +4,7 @@ Developers have been using REST APIs for years to interact with backend data. Ho
 
 This web app provides automatic transformation of REST API endpoints into GraphQL schema entities, making them available for regular GraphQL queries with filters, field selections, dynamic variables, and free-text search. The app supports preconfigured "plug-and-play" REST API endpoints as well as dynamic REST data sources.
 
-## Version 1.1, Oct 19, 2024
+## Version 1.1 (October 23, 2024)
 
 This release supports optional individual API KEYs per each REST API endpoint.
 
@@ -33,6 +33,12 @@ This release supports optional individual API KEYs per each REST API endpoint.
   ```
 
 - API Keys for "ad-hoc" REST API endpoints can be entered directly into the UI of the right-hand panel "Compact playground".
+
+### Additional Improvements in Version 1.1.1 (October 23, 2024)
+
+- Upgraded Next.js from v15-beta to the official public release of v15.0.1.
+
+- Fixed [the issue](#deploy-to-azure-app-service) with missing server-side environment variables in standalone production builds.
 
 ## Version 1.0
 
@@ -648,6 +654,18 @@ You can deploy this web app to **Azure App Service**.
 - Remove or comment out the line [http://localhost:4000/employees?\_sort=displayName&\_order=asc](http://localhost:4000/employees?_sort=displayName&_order=asc) in .env.local (using # or //)
 
 - Uncomment the line **output: "standalone"** in [next.config.mjs](next.config.mjs) > nextConfig
+
+  ```bash
+    // next.config.mjs
+    // ...
+    env: {
+      // Next.js has a known issue: during production builds in "standalone" mode, it does not export server-side variables from .env.local.
+      // To resolve this, you should use .env or .env.production for standalone builds.
+      // Alternatively, you can declare server-side variables from .env.local as exportable ones in next.config.mjs, as shown below.
+      SERVER_ONLY_restApiKeys: process.env.SERVER_ONLY_restApiKeys,
+      pagecachetimeout: process.env.pagecachetimeout,
+    },
+  ```
 
 - Build the app using the command npm build-standalone-win (or build-standalone-unix)
 
