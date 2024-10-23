@@ -34,7 +34,7 @@ This release supports optional individual API KEYs per each REST API endpoint.
 
 - API Keys for "ad-hoc" REST API endpoints can be entered directly into the UI of the right-hand panel "Compact playground".
 
-### Additional Improvements in Version 1.1.1 (October 23, 2024)
+### Additional improvements in Version 1.1.1 (October 23, 2024)
 
 - Upgraded Next.js from v15-beta to the official public release of v15.0.1.
 
