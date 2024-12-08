@@ -682,7 +682,7 @@ Start the service, and the app should load with the homepage displayed.
 
 # Deploy to Azure Container Apps
 
-Have a look at the example in [deploy-to-azure-container.sh](deploy-to-azure-container.sh) and [Dockerfile](Dockerfile).
+Have a look at the examples in [deploy-to-azure-container.sh](deploy-to-azure-container.sh) and [Dockerfile](Dockerfile).
 - If you are on Windows, use Git Bash or WSL to execute Unix shell scripts.
 - Build a local docker image.
   - Dockerfile contains actions to comment out localhost in .env.local and enable standalone output.
