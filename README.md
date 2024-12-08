@@ -680,6 +680,14 @@ Start the service, and the app should load with the homepage displayed.
 
 ![Running on Azure App Service](docs/images/9_running-on-azure-app-service.png "Running on Azure App Service")
 
+# Deploy to Azure Container Apps
+
+Have a look at the example in [deploy-to-azure-container.sh](deploy-to-azure-container.sh).
+- Build local docker image.
+- Push the local image to your Azure Container Registry.
+- Create an Azure Container App, for instance, using *az containerapp create**.
+- Restrict access to your public IP address.
+
 ## Running a standalone build locally
 
 The package **concurrently** does not support standalone mode of Next.js.
